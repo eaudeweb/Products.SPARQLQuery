@@ -1,7 +1,7 @@
 <span tal:replace="structure here/manage_page_header" />
 <span tal:replace="structure here/manage_tabs" />
 
-<form action="manage_edit" method="post">
+<form name="edit-query" action="manage_edit" method="post">
 <table border="0" cellspacing="0" cellpadding="2" width="100%">
   <tr>
     <td class="form-label">Title</td>

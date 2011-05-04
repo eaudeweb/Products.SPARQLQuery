@@ -40,4 +40,8 @@ class SPARQLQuery(SimpleItem):
         self.query = REQUEST.form['query']
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
+    def execute(self):
+        import sparql
+        return sparql.query(self.endpoint_url, self.query)
+
 InitializeClass(SPARQLQuery)

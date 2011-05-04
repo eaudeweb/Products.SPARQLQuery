@@ -3,6 +3,7 @@
 
 <form name="edit-query" action="manage_edit" method="post">
 <table border="0" cellspacing="0" cellpadding="2" width="100%">
+
   <tr>
     <td class="form-label">Title</td>
     <td>
@@ -10,6 +11,13 @@
              tal:attributes="value here/title"/>
     </td>
   </tr>
+
+  <tr>
+    <td class="form-label">SPARQL endpoint URL</td>
+    <td><input type="text" name="endpoint_url:utf8:ustring" size="50"
+               tal:attributes="value here/endpoint_url"/></td>
+  </tr>
+
   <tr>
     <td class="form-label">Query</td>
     <td>
@@ -17,10 +25,12 @@
                 tal:content="here/query"></textarea>
       </td>
   </tr>
+
   <tr>
     <td></td>
     <td><input type="submit" value="Save"/></td>
   </tr>
+
 </table>
 </form>
 

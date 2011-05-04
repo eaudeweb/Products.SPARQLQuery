@@ -7,24 +7,34 @@
 
 <form action="manage_addSPARQLQuery" method="post">
 <table border="0" cellspacing="0" cellpadding="2" width="100%">
+
   <tr>
     <td class="form-label">Id</td>
     <td><input type="text" name="id" size="30"/></td>
   </tr>
+
   <tr>
     <td class="form-label">Title</td>
     <td><input type="text" name="title:utf8:ustring" size="50"/></td>
   </tr>
+
+  <tr>
+    <td class="form-label">SPARQL endpoint URL</td>
+    <td><input type="text" name="endpoint_url:utf8:ustring" size="50"/></td>
+  </tr>
+
   <tr>
     <td class="form-label">Query</td>
     <td>
       <textarea name="query:utf8:ustring" rows="6" cols="80"></textarea>
       </td>
   </tr>
+
   <tr>
     <td></td>
     <td><input type="submit" value="Add"/></td>
   </tr>
+
 </table>
 </form>
 

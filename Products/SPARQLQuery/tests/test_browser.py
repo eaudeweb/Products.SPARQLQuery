@@ -15,7 +15,7 @@ class BrowserTest(unittest.TestCase):
     def setUp(self):
         from Products.SPARQLQuery.Query import SPARQLQuery
 
-        self.query = SPARQLQuery('sq', "Test Query")
+        self.query = SPARQLQuery('sq', "Test Query", "", "")
         app = WsgiApp(self.query)
 
         import wsgi_intercept.mechanize_intercept
@@ -35,7 +35,11 @@ class BrowserTest(unittest.TestCase):
         br = self.browser
         br.open('http://test/manage_edit_html')
         br.select_form(name='edit-query')
+        br['title:utf8:ustring'] = "My awesome query"
+        br['endpoint_url:utf8:ustring'] = "http://dbpedia.org/sparql"
         br['query:utf8:ustring'] = "New query value"
         br.submit()
 
+        self.assertEqual(self.query.title, "My awesome query")
+        self.assertEqual(self.query.endpoint_url, "http://dbpedia.org/sparql")
         self.assertEqual(self.query.query, "New query value")

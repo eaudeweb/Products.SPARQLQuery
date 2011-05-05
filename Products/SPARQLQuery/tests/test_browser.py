@@ -1,6 +1,8 @@
 import unittest
-from mock import Mock
+from mock import Mock, patch
+import wsgi_intercept.mechanize_intercept
 from zope_wsgi import WsgiApp
+
 
 def csstext(target, selector):
     from lxml.cssselect import CSSSelector
@@ -18,18 +20,16 @@ class BrowserTest(unittest.TestCase):
         self.query = SPARQLQuery('sq', "Test Query", "", "")
         app = WsgiApp(self.query)
 
-        import wsgi_intercept.mechanize_intercept
         wsgi_intercept.add_wsgi_intercept('test', 80, lambda: app)
         self.browser = wsgi_intercept.mechanize_intercept.Browser()
 
-        import AccessControl
-        sm = AccessControl.SecurityManagement.SecurityManager
-        sm.validate = lambda *args, **kwargs: True
+        self.validate_patch = patch('AccessControl.SecurityManagement'
+                                    '.SecurityManager.validate')
+        self.validate_patch.start().return_value = True
 
     def tearDown(self):
-        import wsgi_intercept
+        self.validate_patch.stop()
         wsgi_intercept.remove_wsgi_intercept('test', 80)
-        pass
 
     def test_manage_edit(self):
         br = self.browser

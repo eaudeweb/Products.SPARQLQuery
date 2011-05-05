@@ -6,7 +6,7 @@ from mock_sparql import MockSparql
 class QueryTest(unittest.TestCase):
     def setUp(self):
         from Products.SPARQLQuery.Query import SPARQLQuery
-        self.query = SPARQLQuery('sq', "Test Query", "_endpoint_", "_query_")
+        self.query = SPARQLQuery('sq', "Test Query", "_endpoint_")
         self.mock_sparql = MockSparql()
         self.mock_sparql.start()
 

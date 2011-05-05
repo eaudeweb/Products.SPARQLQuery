@@ -19,18 +19,6 @@
   </tr>
 
   <tr>
-    <td class="form-label">SPARQL endpoint URL</td>
-    <td><input type="text" name="endpoint_url:utf8:ustring" size="50"/></td>
-  </tr>
-
-  <tr>
-    <td class="form-label">Query</td>
-    <td>
-      <textarea name="query:utf8:ustring" rows="6" cols="80"></textarea>
-      </td>
-  </tr>
-
-  <tr>
     <td></td>
     <td><input type="submit" value="Add"/></td>
   </tr>

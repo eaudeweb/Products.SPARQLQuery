@@ -15,10 +15,9 @@ class QueryTimeout(Exception):
 
 manage_addSPARQLQuery_html = PageTemplateFile('zpt/query_add.zpt', globals())
 
-def manage_addSPARQLQuery(parent, id, title, query="", endpoint_url="",
-                          REQUEST=None):
+def manage_addSPARQLQuery(parent, id, title, endpoint_url="", REQUEST=None):
     """ Create a new SPARQLQuery """
-    ob = SPARQLQuery(id, title, query, endpoint_url)
+    ob = SPARQLQuery(id, title, endpoint_url)
     parent._setObject(id, ob)
     if REQUEST is not None:
         REQUEST.RESPONSE.redirect(parent.absolute_url() + '/manage_workspace')
@@ -32,12 +31,12 @@ class SPARQLQuery(SimpleItem):
 
     security = ClassSecurityInfo()
 
-    def __init__(self, id, title, query, endpoint_url):
+    def __init__(self, id, title, endpoint_url):
         super(SPARQLQuery, self).__init__()
         self._setId(id)
         self.title = title
-        self.query = query
         self.endpoint_url = endpoint_url
+        self.query = ""
         self.timeout = None
 
     security.declareProtected(view_management_screens, 'manage_edit_html')

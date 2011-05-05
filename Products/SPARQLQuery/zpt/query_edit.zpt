@@ -1,8 +1,15 @@
 <span tal:replace="structure here/manage_page_header" />
 <span tal:replace="structure here/manage_tabs" />
 
+<style>
+  textarea.sparql {
+    font-family: monospace;
+    width: 100%;
+  }
+</style>
+
 <form name="edit-query" action="manage_edit" method="post">
-<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<table border="0" cellspacing="0" cellpadding="2">
 
   <tr>
     <td class="form-label">Title</td>
@@ -24,20 +31,14 @@
                tal:attributes="value here/timeout"/></td>
   </tr>
 
-  <tr>
-    <td class="form-label">Query</td>
-    <td>
-      <textarea name="query:utf8:ustring" rows="6" cols="80"
-                tal:content="here/query"></textarea>
-      </td>
-  </tr>
-
-  <tr>
-    <td></td>
-    <td><input type="submit" value="Save"/></td>
-  </tr>
-
 </table>
+
+<textarea name="query:utf8:ustring"
+          class="sparql" rows="24" cols="120"
+          tal:content="here/query"></textarea>
+
+<p><input type="submit" value="Save"/></p>
+
 </form>
 
 <span tal:replace="structure here/manage_page_footer" />

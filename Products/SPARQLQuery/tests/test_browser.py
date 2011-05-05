@@ -20,7 +20,7 @@ class BrowserTest(unittest.TestCase):
     def setUp(self):
         from Products.SPARQLQuery.Query import SPARQLQuery
 
-        self.query = SPARQLQuery('sq', "Test Query", "", "")
+        self.query = SPARQLQuery('sq', "Test Query", "")
         app = WsgiApp(self.query)
 
         wsgi_intercept.add_wsgi_intercept('test', 80, lambda: app)

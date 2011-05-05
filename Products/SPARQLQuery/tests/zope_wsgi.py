@@ -8,6 +8,8 @@ from webob import Response
 from webob.exc import HTTPNotFound, HTTPSeeOther
 from webob.dec import wsgify
 
+import lxml.cssselect, lxml.html.soupparser
+
 def get_zope_request(webob_request):
     outstream = StringIO()
     response = ZServerHTTPResponse(stdout=outstream, stderr=sys.stderr)
@@ -54,3 +56,12 @@ def _register_traversal_adapters():
                         provided=zope.traversing.interfaces.ITraversable)
 
 _register_traversal_adapters()
+
+def css(target, selector):
+    return lxml.cssselect.CSSSelector(selector)(target)
+
+def csstext(target, selector):
+    return ' '.join(e.text_content() for e in css(target, selector)).strip()
+
+def parse_html(html):
+    return lxml.html.soupparser.fromstring(html)

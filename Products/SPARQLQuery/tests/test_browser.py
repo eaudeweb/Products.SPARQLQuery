@@ -1,20 +1,9 @@
 import unittest
 from mock import Mock, patch
 import wsgi_intercept.mechanize_intercept
-from zope_wsgi import WsgiApp
+from zope_wsgi import WsgiApp, css, csstext, parse_html
 from mock_sparql import MockSparql
 
-
-def css(target, selector):
-    from lxml.cssselect import CSSSelector
-    return CSSSelector(selector)(target)
-
-def csstext(target, selector):
-    return ' '.join(e.text_content() for e in css(target, selector)).strip()
-
-def parse_html(html):
-    from lxml.html.soupparser import fromstring
-    return fromstring(html)
 
 class BrowserTest(unittest.TestCase):
     def setUp(self):

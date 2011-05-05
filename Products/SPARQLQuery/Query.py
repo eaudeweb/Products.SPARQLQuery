@@ -1,5 +1,6 @@
 import sys
 import threading
+from time import time
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
@@ -57,12 +58,20 @@ class SPARQLQuery(SimpleItem):
 
     def index_html(self, REQUEST):
         """ execute the query """
+        t0 = time()
         result = self.execute()
+        dt = time() - t0
         data = {
+            'query_duration': dt,
             'var_names': [unicode(name) for name in result.variables],
             'rows': result.fetchall(),
         }
-        return self.render_results(REQUEST, query=self.query, data=data)
+        options = {
+            'query': self.query,
+            'data': data,
+            'duration': dt,
+        }
+        return self.render_results(REQUEST, **options)
 
 InitializeClass(SPARQLQuery)
 

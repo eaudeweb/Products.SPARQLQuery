@@ -17,11 +17,25 @@
     border: 1px solid #999;
     padding: 3px;
   }
+
+  p.sparql-stats .number {
+    font-family: monospace;
+    font-weight: bold;
+    color: #a50;
+  }
 </style>
 
 <blockquote class="sparql-query"
             tal:condition="options/query|nothing"
             tal:content="options/query"/>
+
+<p class="sparql-stats">
+  Received
+  <span class="number" tal:content="python:len(options['data']['rows'])"/>
+  rows<tal:block condition="python:'duration' in options"> in
+    <span class="number" tal:content="python:'%.3f' % options['duration']"/>
+  seconds</tal:block>.
+</p>
 
 <table class="sparql-results">
   <thead>

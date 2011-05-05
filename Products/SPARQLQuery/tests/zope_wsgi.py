@@ -38,3 +38,19 @@ class WsgiApp(object):
         else:
             body = method(zope_request)
             return Response(body)
+
+
+def _register_traversal_adapters():
+    # since we're not loading any ZCML, we need to register these adapters
+    # by hand.
+    from zope.component import getGlobalSiteManager
+    gsm = getGlobalSiteManager()
+    import zope.traversing.adapters
+    gsm.registerAdapter(required=[None],
+                        factory=zope.traversing.adapters.Traverser,
+                        provided=zope.traversing.interfaces.ITraverser)
+    gsm.registerAdapter(required=[None],
+                        factory=zope.traversing.adapters.DefaultTraversable,
+                        provided=zope.traversing.interfaces.ITraversable)
+
+_register_traversal_adapters()

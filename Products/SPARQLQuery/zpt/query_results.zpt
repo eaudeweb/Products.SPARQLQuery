@@ -1,3 +1,28 @@
+<span tal:replace="structure here/manage_page_header" />
+<span tal:replace="structure here/manage_tabs" />
+
+<style>
+  blockquote.sparql-query {
+    font-family: monospace;
+    white-space: pre;
+    background: #ddd;
+    padding: 5px;
+    border: 2px solid #bbb;
+  }
+
+  table.sparql-results {
+    border-collapse: collapse;
+  }
+  table.sparql-results th, table.sparql-results td {
+    border: 1px solid #999;
+    padding: 3px;
+  }
+</style>
+
+<blockquote class="sparql-query"
+            tal:condition="options/query|nothing"
+            tal:content="options/query"/>
+
 <table class="sparql-results">
   <thead>
     <tr>
@@ -8,7 +33,9 @@
   <tbody>
     <tr tal:repeat="row options/data/rows">
       <td tal:repeat="value row"
-          tal:content="value"/>
+          tal:content="value/n3|string:&quot;${value}&quot;"/>
     </tr>
   </tbody>
 </table>
+
+<span tal:replace="structure here/manage_page_footer" />

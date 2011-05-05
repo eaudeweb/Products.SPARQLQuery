@@ -62,7 +62,7 @@ class SPARQLQuery(SimpleItem):
             'var_names': [unicode(name) for name in result.variables],
             'rows': result.fetchall(),
         }
-        return self.render_results(REQUEST, data=data)
+        return self.render_results(REQUEST, query=self.query, data=data)
 
 InitializeClass(SPARQLQuery)
 

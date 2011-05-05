@@ -79,3 +79,12 @@ class QueryTest(unittest.TestCase):
         mock_threading.Thread.return_value.isAlive.return_value = True
 
         self.assertRaises(QueryTimeout, self.query.execute)
+
+    @patch('Products.SPARQLQuery.Query.sparql')
+    def test_error(self, mock_sparql):
+        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
+        self.query.query = SPARQL_GET_LANGS
+        class MyError(Exception): pass
+        mock_sparql.query.side_effect = MyError
+
+        self.assertRaises(MyError, self.query.execute)

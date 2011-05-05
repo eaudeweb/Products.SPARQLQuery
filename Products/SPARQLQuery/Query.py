@@ -1,9 +1,13 @@
+import sys
 import threading
+
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from AccessControl.Permissions import view_management_screens
 from OFS.SimpleItem import SimpleItem
+
+import sparql
 
 class QueryTimeout(Exception):
     pass
@@ -45,7 +49,6 @@ class SPARQLQuery(SimpleItem):
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
     def execute(self):
-        import sparql
         return run_with_timeout(5, sparql.query, self.endpoint_url, self.query)
 
 InitializeClass(SPARQLQuery)
@@ -54,7 +57,12 @@ InitializeClass(SPARQLQuery)
 def run_with_timeout(timeout, func, *args, **kwargs):
     result = {}
     def thread_job():
-        result['return'] = func(*args, **kwargs)
+        try:
+            ret = func(*args, **kwargs)
+        except Exception, e:
+            result['exception'] = sys.exc_info()
+        else:
+            result['return'] = ret
 
     worker = threading.Thread(target=thread_job)
     worker.start()
@@ -62,4 +70,8 @@ def run_with_timeout(timeout, func, *args, **kwargs):
     if worker.isAlive():
         raise QueryTimeout
 
-    return result['return']
+    if 'exception' in result:
+        exc_info = result['exception']
+        raise exc_info[0], exc_info[1], exc_info[2]
+    else:
+        return result['return']

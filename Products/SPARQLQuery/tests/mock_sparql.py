@@ -42,7 +42,7 @@ def mock_urlopen(request):
         from urlparse import parse_qs
     except ImportError:
         from cgi import parse_qs
-    query = parse_qs(request.get_data())['query'][0]
+    query = parse_qs(request.get_data()).get('query', [''])[0]
 
     response = Mock()
     response.fp = StringIO(respond_to_sparql(query))

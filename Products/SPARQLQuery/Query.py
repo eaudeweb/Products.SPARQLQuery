@@ -1,8 +1,12 @@
+import threading
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from AccessControl.Permissions import view_management_screens
 from OFS.SimpleItem import SimpleItem
+
+class QueryTimeout(Exception):
+    pass
 
 manage_addSPARQLQuery_html = PageTemplateFile('zpt/query_add.zpt', globals())
 
@@ -42,6 +46,20 @@ class SPARQLQuery(SimpleItem):
 
     def execute(self):
         import sparql
-        return sparql.query(self.endpoint_url, self.query)
+        return run_with_timeout(5, sparql.query, self.endpoint_url, self.query)
 
 InitializeClass(SPARQLQuery)
+
+
+def run_with_timeout(timeout, func, *args, **kwargs):
+    result = {}
+    def thread_job():
+        result['return'] = func(*args, **kwargs)
+
+    worker = threading.Thread(target=thread_job)
+    worker.start()
+    worker.join(timeout)
+    if worker.isAlive():
+        raise QueryTimeout
+
+    return result['return']

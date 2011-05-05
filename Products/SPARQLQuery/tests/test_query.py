@@ -70,3 +70,12 @@ class QueryTest(unittest.TestCase):
             (IRI('http://rdfdata.eionet.europa.eu/eea/languages/en'),),
             (IRI('http://rdfdata.eionet.europa.eu/eea/languages/de'),),
         ])
+
+    @patch('Products.SPARQLQuery.Query.threading')
+    def test_timeout(self, mock_threading):
+        from Products.SPARQLQuery.Query import QueryTimeout
+        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
+        self.query.query = SPARQL_GET_LANGS
+        mock_threading.Thread.return_value.isAlive.return_value = True
+
+        self.assertRaises(QueryTimeout, self.query.execute)

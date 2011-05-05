@@ -1,0 +1,369 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sparql xmlns='http://www.w3.org/2005/sparql-results#'>
+  <head>
+    <variable name='lang_url'/>
+    <variable name='name'/>
+  </head>
+  <results>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/sq</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Albanian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/hy</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Armenian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/az</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Azerbaijani</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/bg</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Bulgarian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/be</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Belarusian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/cs</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Czech</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/de</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>German</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/da</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Danish</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/et</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Estonian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/es</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Spanish</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/fi</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Finnish</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/fr</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>French</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/ka</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Georgian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/el</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Greek</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/hr</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Croatian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/hu</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Hungarian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/ga</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Irish</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/is</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Icelandic</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/it</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Italian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/kk</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Kazakh</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/lt</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Lithuanian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/lv</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Latvian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/me</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Montenegrin</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/mk</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Macedonian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/mt</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Maltese</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/nl</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Dutch</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/no</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Norwegian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/pl</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Polish</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/pt</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Portuguese</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/ro</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Romanian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/sr</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Serbian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/ru</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Russian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/sv</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Swedish</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/sk</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Slovak</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/tr</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Turkish</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/uk</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Ukrainian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/en</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>English</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/bs</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Bosnian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/rm</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Rhaeto-Romance</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/sl</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Slovenian</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/ca</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Catalan</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/tg</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Tajik</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/ky</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Kyrgyz</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/tk</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Turkmen</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name='lang_url'>
+        <uri>http://rdfdata.eionet.europa.eu/eea/languages/lb</uri>
+      </binding>
+      <binding name='name'>
+        <literal xml:lang='en'>Luxembourgish</literal>
+      </binding>
+    </result>
+  </results>
+</sparql>

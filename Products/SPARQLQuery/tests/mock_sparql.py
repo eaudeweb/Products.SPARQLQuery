@@ -1,4 +1,5 @@
 import urllib2
+from os import path
 from StringIO import StringIO
 from mock import Mock, patch
 
@@ -8,34 +9,27 @@ SELECT ?lang_url WHERE {
 }
 """
 
-SPARQL_RESPONSES = {}
-SPARQL_RESPONSES[SPARQL_GET_LANGS] = """\
-<?xml version='1.0' encoding='UTF-8'?>
-<sparql xmlns='http://www.w3.org/2005/sparql-results#'>
-  <head>
-    <variable name='lang_url'/>
-  </head>
-  <results>
-    <result>
-      <binding name='lang_url'>
-        <uri>http://rdfdata.eionet.europa.eu/eea/languages/en</uri>
-      </binding>
-    </result>
-    <result>
-      <binding name='lang_url'>
-        <uri>http://rdfdata.eionet.europa.eu/eea/languages/de</uri>
-      </binding>
-    </result>
-  </results>
-</sparql>
+SPARQL_GET_LANG_NAMES = """\
+PREFIX eea_ontology: <http://rdfdata.eionet.europa.eu/eea/ontology/>
+SELECT * WHERE {
+  ?lang_url a eea_ontology:Language .
+  ?lang_url eea_ontology:name ?name .
+  FILTER (lang(?name) = "en") .
+}
 """
 
-def respond_to_sparql(query):
-    for key in SPARQL_RESPONSES:
-        if query == key.replace("\n", " ").encode('utf-8'):
-            return SPARQL_RESPONSES[key]
+def respond_to_sparql(client_query):
+    for name, query in MockSparql.queries.iteritems():
+        if client_query == query.replace("\n", " ").encode('utf-8'):
+            xml_path = path.join(path.dirname(__file__),
+                                 'sparql-%s.xml' % name)
+            f = open(xml_path, 'rb')
+            data = f.read()
+            f.close()
+            return data
+
     else:
-        raise ValueError("unknown query: %r" % query)
+        raise ValueError("unknown query: %r" % client_query)
 
 def mock_urlopen(request):
     try:
@@ -51,6 +45,7 @@ def mock_urlopen(request):
 class MockSparql(object):
     queries = {
         'get_languages': SPARQL_GET_LANGS,
+        'get_lang_names': SPARQL_GET_LANG_NAMES,
     }
 
     def start(self):

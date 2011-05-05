@@ -5,7 +5,7 @@ from time import time
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from AccessControl.Permissions import view_management_screens
+from AccessControl.Permissions import view, view_management_screens
 from OFS.SimpleItem import SimpleItem
 
 import sparql
@@ -50,12 +50,14 @@ class SPARQLQuery(SimpleItem):
         self.query = REQUEST.form['query']
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
+    security.declareProtected(view, 'execute')
     def execute(self):
         return run_with_timeout(5, sparql.query, self.endpoint_url, self.query)
 
 
     render_results = PageTemplateFile('zpt/query_results.zpt', globals())
 
+    security.declareProtected(view, 'index_html')
     def index_html(self, REQUEST):
         """ execute the query """
         t0 = time()

@@ -1,0 +1,14 @@
+<table class="sparql-results">
+  <thead>
+    <tr>
+      <th tal:repeat="name options/data/var_names"
+          tal:content="name"/>
+    </tr>
+  </thead>
+  <tbody>
+    <tr tal:repeat="row options/data/rows">
+      <td tal:repeat="value row"
+          tal:content="value"/>
+    </tr>
+  </tbody>
+</table>

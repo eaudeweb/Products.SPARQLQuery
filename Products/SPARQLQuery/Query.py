@@ -26,6 +26,7 @@ class SPARQLQuery(SimpleItem):
     meta_type = "SPARQL Query"
     manage_options = (
         {'label': 'Edit', 'action': 'manage_edit_html'},
+        {'label': 'View', 'action': 'index_html'},
     ) + SimpleItem.manage_options
 
     security = ClassSecurityInfo()
@@ -50,6 +51,18 @@ class SPARQLQuery(SimpleItem):
 
     def execute(self):
         return run_with_timeout(5, sparql.query, self.endpoint_url, self.query)
+
+
+    render_results = PageTemplateFile('zpt/query_results.zpt', globals())
+
+    def index_html(self, REQUEST):
+        """ execute the query """
+        result = self.execute()
+        data = {
+            'var_names': [unicode(name) for name in result.variables],
+            'rows': result.fetchall(),
+        }
+        return self.render_results(REQUEST, data=data)
 
 InitializeClass(SPARQLQuery)
 

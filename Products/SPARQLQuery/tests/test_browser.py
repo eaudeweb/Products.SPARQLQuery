@@ -2,12 +2,15 @@ import unittest
 from mock import Mock, patch
 import wsgi_intercept.mechanize_intercept
 from zope_wsgi import WsgiApp
+from mock_sparql import MockSparql
 
+
+def css(target, selector):
+    from lxml.cssselect import CSSSelector
+    return CSSSelector(selector)(target)
 
 def csstext(target, selector):
-    from lxml.cssselect import CSSSelector
-    return ' '.join(e.text_content() for e in
-                    CSSSelector(selector)(target)).strip()
+    return ' '.join(e.text_content() for e in css(target, selector)).strip()
 
 def parse_html(html):
     from lxml.html.soupparser import fromstring
@@ -27,7 +30,12 @@ class BrowserTest(unittest.TestCase):
                                     '.SecurityManager.validate')
         self.validate_patch.start().return_value = True
 
+        self.mock_sparql = MockSparql()
+        self.mock_sparql.start()
+
+
     def tearDown(self):
+        self.mock_sparql.stop()
         self.validate_patch.stop()
         wsgi_intercept.remove_wsgi_intercept('test', 80)
 
@@ -43,3 +51,19 @@ class BrowserTest(unittest.TestCase):
         self.assertEqual(self.query.title, "My awesome query")
         self.assertEqual(self.query.endpoint_url, "http://dbpedia.org/sparql")
         self.assertEqual(self.query.query, "New query value")
+
+    def test_index(self):
+        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
+        self.query.query = self.mock_sparql.queries['get_lang_names']
+        br = self.browser
+        page = parse_html(br.open('http://test/').read())
+        table = css(page, 'table.sparql-results')[0]
+
+        table_headings = [e.text for e in css(table, 'thead th')]
+        self.assertEqual(table_headings, ['lang_url', 'name'])
+
+        table_data = [[td.text for td in css(tr, 'td')]
+                      for tr in css(table, 'tbody tr')]
+        self.assertEqual(len(table_data), 45)
+        lang_da_url = 'http://rdfdata.eionet.europa.eu/eea/languages/da'
+        self.assertEqual(table_data[7], [lang_da_url, 'Danish'])

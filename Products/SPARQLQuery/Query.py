@@ -59,7 +59,9 @@ class SPARQLQuery(SimpleItem):
 
     security.declareProtected(view, 'index_html')
     def index_html(self, REQUEST):
-        """ execute the query """
+        """
+        Execute the query and pretty-print the results as an HTML table.
+        """
         t0 = time()
         result = self.execute()
         dt = time() - t0
@@ -79,6 +81,11 @@ InitializeClass(SPARQLQuery)
 
 
 def run_with_timeout(timeout, func, *args, **kwargs):
+    """
+    Run the given callable in a separate thread; if it does not return within
+    `timeout` seconds, ignore the result and raise `QueryTimeout`.
+    """
+
     result = {}
     def thread_job():
         try:

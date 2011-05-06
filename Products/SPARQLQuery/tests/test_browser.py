@@ -35,11 +35,13 @@ class BrowserTest(unittest.TestCase):
         br['title:utf8:ustring'] = "My awesome query"
         br['endpoint_url:utf8:ustring'] = "http://dbpedia.org/sparql"
         br['query:utf8:ustring'] = "New query value"
+        br['arguments:utf8:ustring'] = "lang_name:literal:en"
         br.submit()
 
         self.assertEqual(self.query.title, "My awesome query")
         self.assertEqual(self.query.endpoint_url, "http://dbpedia.org/sparql")
         self.assertEqual(self.query.query, "New query value")
+        self.assertEqual(self.query.arguments, "lang_name:literal:en")
 
     def test_query_test_page(self):
         self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"

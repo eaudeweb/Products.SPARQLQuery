@@ -31,6 +31,12 @@
                tal:attributes="value here/timeout"/></td>
   </tr>
 
+  <tr>
+    <td class="form-label">Arguments</td>
+    <td><input type="text" name="arguments:utf8:ustring" size="50"
+               tal:attributes="value here/arguments"/></td>
+  </tr>
+
 </table>
 
 <textarea name="query:utf8:ustring"

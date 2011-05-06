@@ -36,8 +36,9 @@ class SPARQLQuery(SimpleItem):
         self._setId(id)
         self.title = title
         self.endpoint_url = endpoint_url
-        self.query = ""
         self.timeout = None
+        self.arguments = ""
+        self.query = ""
 
     security.declareProtected(view_management_screens, 'manage_edit_html')
     manage_edit_html = PageTemplateFile('zpt/query_edit.zpt', globals())
@@ -47,11 +48,12 @@ class SPARQLQuery(SimpleItem):
         """ Edit this query """
         self.title = REQUEST.form['title']
         self.endpoint_url= REQUEST.form['endpoint_url']
-        self.query = REQUEST.form['query']
         timeout = REQUEST.form['timeout'] or None
         if timeout is not None:
             timeout = float(timeout)
         self.timeout = timeout
+        self.query = REQUEST.form['query']
+        self.arguments = REQUEST.form['arguments']
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
     security.declareProtected(view, 'execute')

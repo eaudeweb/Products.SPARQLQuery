@@ -1,14 +1,13 @@
 <span tal:replace="structure here/manage_page_header" />
 <span tal:replace="structure here/manage_tabs" />
 
-<form name="update-value" method="post"
-      tal:attributes="action string:${here/absolute_url}/manage_update">
-  <input type="submit" value="Update"/>
-</form>
+<style>
+  textarea.update-script { font-family: monospace; }
+  form.single-button { float: left; }
+</style>
 
 <form name="edit-valuebox" action="manage_edit" method="post">
 <table border="0" cellspacing="0" cellpadding="2">
-
   <tr>
     <td class="form-label">Title</td>
     <td>
@@ -16,18 +15,25 @@
              tal:attributes="value here/title"/>
     </td>
   </tr>
-
 </table>
 
 <label for="input-update_script" class="form-label">Update script</label><br/>
 <textarea name="update_script:utf8:ustring" id="input-update_script"
-          rows="24" cols="120"
+          rows="24" cols="120" class="update-script"
           tal:content="here/update_script|nothing"></textarea>
 
 <p><input type="submit" value="Save"/></p>
-
 </form>
 
+<form name="preview-update" method="get" class="single-button"
+      tal:attributes="action string:${here/absolute_url}/manage_preview_html">
+  <input type="submit" value="Preview"/>
+</form>
+
+<form name="update-value" method="post" class="single-button"
+      tal:attributes="action string:${here/absolute_url}/manage_update">
+  <input type="submit" value="Update"/>
+</form>
 
 
 <span tal:replace="structure here/manage_page_footer" />

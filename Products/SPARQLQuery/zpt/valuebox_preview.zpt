@@ -1,6 +1,11 @@
 <span tal:replace="structure here/manage_page_header" />
 <span tal:replace="structure here/manage_tabs" />
 
-<div class="update-preview" tal:content="here/evaluate"/>
+<style>
+  div.update-preview { font-family: monospace; white-space: pre; }
+</style>
+
+<div class="update-preview"
+     tal:content="python:here.pretty_print(here.evaluate())"/>
 
 <span tal:replace="structure here/manage_page_footer" />

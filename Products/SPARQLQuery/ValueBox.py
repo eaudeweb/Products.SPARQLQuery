@@ -24,7 +24,6 @@ class ValueBox(SimpleItem):
     manage_options = (
         {'label': 'Edit', 'action': 'manage_edit_html'},
         {'label': 'View', 'action': 'index_html'},
-        {'label': 'Preview update', 'action': 'manage_preview_html'},
     ) + SimpleItem.manage_options
 
     security = ClassSecurityInfo()
@@ -43,6 +42,10 @@ class ValueBox(SimpleItem):
         python_script = PythonScript('update_script_runner').__of__(self)
         python_script.write(self.update_script)
         return python_script()
+
+    def pretty_print(self, value):
+        import pprint
+        return pprint.pformat(value)
 
     security.declareProtected(view_management_screens, 'manage_update')
     @postonly
@@ -70,6 +73,7 @@ class ValueBox(SimpleItem):
     security.declareProtected(view, 'index_html')
     def index_html(self, REQUEST):
         """ """
-        return "hi"
+        REQUEST.RESPONSE.setHeader('Content-Type', 'text/plain')
+        return self.pretty_print(self.value)
 
 InitializeClass(ValueBox)

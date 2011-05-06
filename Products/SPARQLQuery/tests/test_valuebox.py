@@ -75,7 +75,7 @@ class ValueBoxBrowserTest(unittest.TestCase):
         self.box.update_script = "return '%.2f' % 1.2345\n"
         br = self.browser
         page = parse_html(br.open('http://test/manage_preview_html').read())
-        self.assertEqual(csstext(page, 'div.update-preview'), "1.23")
+        self.assertEqual(csstext(page, 'div.update-preview'), "'1.23'")
 
     def test_update_GET_not_allowed(self):
         from webob import Request

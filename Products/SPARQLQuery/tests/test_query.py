@@ -1,6 +1,6 @@
 import unittest
 from mock import patch
-from mock_sparql import MockSparql
+import mock_db
 
 import sparql
 
@@ -10,16 +10,16 @@ class QueryTest(unittest.TestCase):
     def setUp(self):
         from Products.SPARQLQuery.Query import SPARQLQuery
         self.query = SPARQLQuery('sq', "Test Query", "_endpoint_")
-        self.mock_sparql = MockSparql()
-        self.mock_sparql.start()
+        self.mock_db = mock_db.MockSparql()
+        self.mock_db.start()
 
     def tearDown(self):
-        self.mock_sparql.stop()
+        self.mock_db.stop()
 
     def test_simple_query(self):
         from sparql import IRI
         self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
-        self.query.query = self.mock_sparql.queries['get_languages']
+        self.query.query = mock_db.GET_LANGS
         result = self.query.execute()
         self.assertEqual(result.fetchall(), [
             (IRI(EIONET_RDF + '/languages/en'),),
@@ -30,7 +30,7 @@ class QueryTest(unittest.TestCase):
     def test_timeout(self, mock_threading):
         from Products.SPARQLQuery.Query import QueryTimeout
         self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
-        self.query.query = self.mock_sparql.queries['get_languages']
+        self.query.query = mock_db.GET_LANGS
         mock_threading.Thread.return_value.isAlive.return_value = True
 
         self.assertRaises(QueryTimeout, self.query.execute)
@@ -38,7 +38,7 @@ class QueryTest(unittest.TestCase):
     @patch('Products.SPARQLQuery.Query.sparql')
     def test_error(self, mock_sparql):
         self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
-        self.query.query = self.mock_sparql.queries['get_languages']
+        self.query.query = mock_db.GET_LANGS
         class MyError(Exception): pass
         mock_sparql.query.side_effect = MyError
 

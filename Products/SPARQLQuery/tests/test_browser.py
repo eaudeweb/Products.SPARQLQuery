@@ -2,7 +2,7 @@ import unittest
 from mock import Mock, patch
 import wsgi_intercept.mechanize_intercept
 from zope_wsgi import WsgiApp, css, csstext, parse_html
-from mock_sparql import MockSparql
+import mock_db
 
 
 class BrowserTest(unittest.TestCase):
@@ -19,12 +19,12 @@ class BrowserTest(unittest.TestCase):
                                     '.SecurityManager.validate')
         self.validate_patch.start().return_value = True
 
-        self.mock_sparql = MockSparql()
-        self.mock_sparql.start()
+        self.mock_db = mock_db.MockSparql()
+        self.mock_db.start()
 
 
     def tearDown(self):
-        self.mock_sparql.stop()
+        self.mock_db.stop()
         self.validate_patch.stop()
         wsgi_intercept.remove_wsgi_intercept('test', 80)
 
@@ -45,7 +45,7 @@ class BrowserTest(unittest.TestCase):
 
     def test_query_test_page(self):
         self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
-        self.query.query = self.mock_sparql.queries['get_lang_names']
+        self.query.query = mock_db.GET_LANG_NAMES
         br = self.browser
         page = parse_html(br.open('http://test/test_html').read())
         table = css(page, 'table.sparql-results')[0]

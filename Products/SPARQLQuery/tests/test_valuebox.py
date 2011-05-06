@@ -27,6 +27,8 @@ class BrowserTest(unittest.TestCase):
         br.open('http://test/manage_edit_html')
         br.select_form(name='edit-valuebox')
         br['title:utf8:ustring'] = "My boxed value"
+        br['update_script:utf8:ustring'] = "return '%.2f' % 1.2345\n"
         br.submit()
 
         self.assertEqual(self.box.title, "My boxed value")
+        self.assertEqual(self.box.update_script, "return '%.2f' % 1.2345\n")

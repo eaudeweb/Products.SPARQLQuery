@@ -12,11 +12,17 @@
     </td>
   </tr>
 
-  <tr>
-    <td colspan="2"><input type="submit" value="Save"/></td>
-  </tr>
-
 </table>
+
+<label for="input-update_script" class="form-label">Update script</label><br/>
+<textarea name="update_script:utf8:ustring" id="input-update_script"
+          rows="24" cols="120"
+          tal:content="here/update_script|nothing"></textarea>
+
+<p><input type="submit" value="Save"/></p>
+
 </form>
+
+
 
 <span tal:replace="structure here/manage_page_footer" />

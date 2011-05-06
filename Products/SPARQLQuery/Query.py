@@ -26,7 +26,7 @@ class SPARQLQuery(SimpleItem):
     meta_type = "SPARQL Query"
     manage_options = (
         {'label': 'Edit', 'action': 'manage_edit_html'},
-        {'label': 'View', 'action': 'index_html'},
+        {'label': 'Test', 'action': 'test_html'},
     ) + SimpleItem.manage_options
 
     security = ClassSecurityInfo()
@@ -60,10 +60,10 @@ class SPARQLQuery(SimpleItem):
         return run_with_timeout(self.timeout, sparql.query, *args)
 
 
-    render_results = PageTemplateFile('zpt/query_results.zpt', globals())
+    _test_html = PageTemplateFile('zpt/query_test.zpt', globals())
 
-    security.declareProtected(view, 'index_html')
-    def index_html(self, REQUEST):
+    security.declareProtected(view, 'test_html')
+    def test_html(self, REQUEST):
         """
         Execute the query and pretty-print the results as an HTML table.
         """
@@ -80,7 +80,7 @@ class SPARQLQuery(SimpleItem):
             'data': data,
             'duration': dt,
         }
-        return self.render_results(REQUEST, **options)
+        return self._test_html(REQUEST, **options)
 
 InitializeClass(SPARQLQuery)
 

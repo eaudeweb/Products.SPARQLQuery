@@ -41,11 +41,11 @@ class BrowserTest(unittest.TestCase):
         self.assertEqual(self.query.endpoint_url, "http://dbpedia.org/sparql")
         self.assertEqual(self.query.query, "New query value")
 
-    def test_index(self):
+    def test_query_test_page(self):
         self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
         self.query.query = self.mock_sparql.queries['get_lang_names']
         br = self.browser
-        page = parse_html(br.open('http://test/').read())
+        page = parse_html(br.open('http://test/test_html').read())
         table = css(page, 'table.sparql-results')[0]
 
         table_headings = [e.text for e in css(table, 'thead th')]

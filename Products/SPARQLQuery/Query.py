@@ -113,3 +113,28 @@ def run_with_timeout(timeout, func, *args, **kwargs):
         raise exc_info[0], exc_info[1], exc_info[2]
     else:
         return result['return']
+
+RDF_TYPES = {
+    'literal': sparql.Literal,
+    'iri': sparql.IRI
+}
+
+def parse_arg_spec(raw_arg_spec):
+    arg_spec = {}
+    for one_arg_spec in raw_arg_spec.split():
+        name, type_spec = one_arg_spec.split(':')
+        rdf_type = RDF_TYPES[type_spec]
+        arg_spec[name] = rdf_type
+    return arg_spec
+
+def map_arg_values(raw_arg_spec, arg_data):
+    arg_values = {}
+    for name, rdf_type in raw_arg_spec.iteritems():
+        arg_values[name] = rdf_type(arg_data[name])
+
+    return arg_values
+
+def interpolate_query(query_spec, var_data):
+    from string import Template
+    var_strings = dict( (k, v.n3()) for (k, v) in var_data.iteritems() )
+    return Template(query_spec).substitute(**var_strings)

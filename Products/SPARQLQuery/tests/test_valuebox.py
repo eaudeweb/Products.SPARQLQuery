@@ -4,7 +4,36 @@ import wsgi_intercept.mechanize_intercept
 from zope_wsgi import WsgiApp, css, csstext, parse_html
 
 
-class BrowserTest(unittest.TestCase):
+class ValueBoxApiTest(unittest.TestCase):
+    def setUp(self):
+        from Products.SPARQLQuery.ValueBox import ValueBox
+        self.box = ValueBox('box', "Test ValueBox")
+
+    def test_evaluate_ok(self):
+        self.box.update_script = "return '%.2f' % 1.2345\n"
+        result1 = self.box.evaluate()
+        self.assertEqual(result1, '1.23')
+
+        self.box.update_script = "return {1: None, '2': [7,8]}\n"
+        result2 = self.box.evaluate()
+        self.assertEqual(result2, {1: None, '2': [7,8]})
+
+    def test_evaluate_unauthorized(self):
+        from AccessControl import Unauthorized
+        self.box.update_script = "import os; os.system('/bin/ls')"
+        self.assertRaises(Unauthorized, self.box.evaluate)
+
+    def test_exception(self):
+        self.box.update_script = "raise ValueError('hello world')"
+        try:
+            self.box.evaluate()
+        except ValueError, e:
+            self.assertEqual(e.args, ('hello world',))
+        else:
+            self.fail("ValueError not raised")
+
+
+class ValueBoxBrowserTest(unittest.TestCase):
     def setUp(self):
         from Products.SPARQLQuery.ValueBox import ValueBox
 

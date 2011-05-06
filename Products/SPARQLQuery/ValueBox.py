@@ -3,6 +3,7 @@ from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from AccessControl.Permissions import view, view_management_screens
 from OFS.SimpleItem import SimpleItem
+from Products.PythonScripts.PythonScript import PythonScript
 
 DEFAULT_UPDATE_SCRIPT = """\
 # This script is run to update the boxed value.
@@ -31,6 +32,12 @@ class ValueBox(SimpleItem):
         self._setId(id)
         self.title = title
         self.update_script = DEFAULT_UPDATE_SCRIPT
+
+    security.declareProtected(view, 'evaluate')
+    def evaluate(self):
+        python_script = PythonScript('update_script_runner').__of__(self)
+        python_script.write(self.update_script)
+        return python_script()
 
     security.declareProtected(view_management_screens, 'manage_edit_html')
     manage_edit_html = PageTemplateFile('zpt/valuebox_edit.zpt', globals())

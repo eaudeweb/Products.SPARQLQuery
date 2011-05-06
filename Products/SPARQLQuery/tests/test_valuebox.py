@@ -1,5 +1,5 @@
 import unittest
-from mock import patch
+from mock import Mock, patch
 import wsgi_intercept.mechanize_intercept
 from zope_wsgi import WsgiApp, css, csstext, parse_html
 
@@ -32,15 +32,24 @@ class ValueBoxApiTest(unittest.TestCase):
         else:
             self.fail("ValueError not raised")
 
+    def test_update(self):
+        self.assertEqual(self.box.value, None)
+
+        self.box.update_script = "return '%.2f' % 1.2345\n"
+        self.box.manage_update()
+
+        self.assertEqual(self.box.value, '1.23')
+
 
 class ValueBoxBrowserTest(unittest.TestCase):
     def setUp(self):
         from Products.SPARQLQuery.ValueBox import ValueBox
 
         self.box = ValueBox('box', "Test ValueBox")
-        app = WsgiApp(self.box)
+        self.box_app = WsgiApp(self.box)
+        self.box.absolute_url = Mock(return_value='')
 
-        wsgi_intercept.add_wsgi_intercept('test', 80, lambda: app)
+        wsgi_intercept.add_wsgi_intercept('test', 80, lambda: self.box_app)
         self.browser = wsgi_intercept.mechanize_intercept.Browser()
 
         self.validate_patch = patch('AccessControl.SecurityManagement'
@@ -65,5 +74,25 @@ class ValueBoxBrowserTest(unittest.TestCase):
     def test_update_preview(self):
         self.box.update_script = "return '%.2f' % 1.2345\n"
         br = self.browser
-        page = parse_html(br.open('http://test/manage_preview').read())
+        page = parse_html(br.open('http://test/manage_preview_html').read())
         self.assertEqual(csstext(page, 'div.update-preview'), "1.23")
+
+    def test_update_GET_not_allowed(self):
+        from webob import Request
+        self.box.update_script = "return 13"
+
+        GET_request = Request.blank('/manage_update')
+        GET_response = GET_request.get_response(self.box_app)
+
+        self.assertEqual(GET_response.status_int, 403)
+        self.assertEqual(self.box.value, None)
+
+    def test_update_from_browser(self):
+        self.box.update_script = "return 13"
+
+        br = self.browser
+        br.open('http://test/manage_edit_html')
+        br.select_form(name='update-value')
+        br.submit()
+
+        self.assertEqual(self.box.value, 13)

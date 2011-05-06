@@ -5,10 +5,12 @@ from ZServer.HTTPResponse import ZServerHTTPResponse
 from ZPublisher.Request import Request
 
 from webob import Response
-from webob.exc import HTTPNotFound, HTTPSeeOther
+from webob.exc import HTTPNotFound, HTTPForbidden
 from webob.dec import wsgify
 
 import lxml.cssselect, lxml.html.soupparser
+
+from mock import Mock
 
 def get_zope_request(webob_request):
     outstream = StringIO()
@@ -30,6 +32,7 @@ class WsgiApp(object):
         app = Application()
 
         from ZPublisher.HTTPRequest import HTTPRequest
+        from zExceptions import Forbidden
         app.REQUEST = zope_request = get_zope_request(request)
 
         try:
@@ -38,8 +41,12 @@ class WsgiApp(object):
         except AttributeError:
             return HTTPNotFound()
         else:
-            body = method(zope_request)
-            return Response(body)
+            try:
+                body = method(zope_request)
+            except Forbidden:
+                return HTTPForbidden()
+            else:
+                return Response(body)
 
 
 def _register_traversal_adapters():

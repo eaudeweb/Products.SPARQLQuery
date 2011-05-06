@@ -1,6 +1,11 @@
 <span tal:replace="structure here/manage_page_header" />
 <span tal:replace="structure here/manage_tabs" />
 
+<form name="update-value" method="post"
+      tal:attributes="action string:${here/absolute_url}/manage_update">
+  <input type="submit" value="Update"/>
+</form>
+
 <form name="edit-valuebox" action="manage_edit" method="post">
 <table border="0" cellspacing="0" cellpadding="2">
 

@@ -1,0 +1,6 @@
+<span tal:replace="structure here/manage_page_header" />
+<span tal:replace="structure here/manage_tabs" />
+
+<div class="update-preview" tal:content="here/evaluate"/>
+
+<span tal:replace="structure here/manage_page_footer" />

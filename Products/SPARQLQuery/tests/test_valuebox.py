@@ -61,3 +61,9 @@ class ValueBoxBrowserTest(unittest.TestCase):
 
         self.assertEqual(self.box.title, "My boxed value")
         self.assertEqual(self.box.update_script, "return '%.2f' % 1.2345\n")
+
+    def test_update_preview(self):
+        self.box.update_script = "return '%.2f' % 1.2345\n"
+        br = self.browser
+        page = parse_html(br.open('http://test/manage_preview').read())
+        self.assertEqual(csstext(page, 'div.update-preview'), "1.23")

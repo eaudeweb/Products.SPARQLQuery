@@ -49,6 +49,9 @@ class ValueBox(SimpleItem):
         self.update_script = REQUEST.form['update_script']
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
+    security.declareProtected(view_management_screens, 'manage_preview')
+    manage_preview = PageTemplateFile('zpt/valuebox_preview', globals())
+
     security.declareProtected(view, 'index_html')
     def index_html(self, REQUEST):
         """ """

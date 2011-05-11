@@ -57,8 +57,9 @@ class SPARQLQuery(SimpleItem):
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
     security.declareProtected(view, 'execute')
-    def execute(self):
-        args = (self.endpoint_url, self.query)
+    def execute(self, **arg_values):
+        cooked_query = interpolate_query(self.query, arg_values)
+        args = (self.endpoint_url, cooked_query)
         return run_with_timeout(self.timeout, sparql.query, *args)
 
 
@@ -124,7 +125,7 @@ def parse_arg_spec(raw_arg_spec):
     for one_arg_spec in raw_arg_spec.split():
         name, type_spec = one_arg_spec.split(':')
         rdf_type = RDF_TYPES[type_spec]
-        arg_spec[name] = rdf_type
+        arg_spec[str(name)] = rdf_type
     return arg_spec
 
 def map_arg_values(raw_arg_spec, arg_data):

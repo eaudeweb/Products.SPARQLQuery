@@ -26,6 +26,8 @@ SELECT * WHERE {
 }
 """
 
+GET_LANG_BY_NAME_DA = GET_LANG_BY_NAME.replace('${lang_name}', '"Danish"')
+
 def pack(q):
     return q.replace("\n", " ").encode('utf-8')
 
@@ -40,6 +42,7 @@ class MockSparql(object):
     queries = {
         pack(GET_LANGS): read_response_xml('get_languages'),
         pack(GET_LANG_NAMES): read_response_xml('get_lang_names'),
+        pack(GET_LANG_BY_NAME_DA): read_response_xml('get_lang_by_name-da'),
     }
 
     def start(self):

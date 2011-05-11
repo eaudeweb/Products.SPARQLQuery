@@ -10,6 +10,7 @@ class QueryTest(unittest.TestCase):
     def setUp(self):
         from Products.SPARQLQuery.Query import SPARQLQuery
         self.query = SPARQLQuery('sq', "Test Query", "_endpoint_")
+        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
         self.mock_db = mock_db.MockSparql()
         self.mock_db.start()
 
@@ -18,7 +19,6 @@ class QueryTest(unittest.TestCase):
 
     def test_simple_query(self):
         from sparql import IRI
-        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
         self.query.query = mock_db.GET_LANGS
         result = self.query.execute()
         self.assertEqual(result.fetchall(), [
@@ -29,7 +29,6 @@ class QueryTest(unittest.TestCase):
     @patch('Products.SPARQLQuery.Query.threading')
     def test_timeout(self, mock_threading):
         from Products.SPARQLQuery.Query import QueryTimeout
-        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
         self.query.query = mock_db.GET_LANGS
         mock_threading.Thread.return_value.isAlive.return_value = True
 
@@ -37,12 +36,18 @@ class QueryTest(unittest.TestCase):
 
     @patch('Products.SPARQLQuery.Query.sparql')
     def test_error(self, mock_sparql):
-        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
         self.query.query = mock_db.GET_LANGS
         class MyError(Exception): pass
         mock_sparql.query.side_effect = MyError
 
         self.assertRaises(MyError, self.query.execute)
+
+    def test_query_with_arguments(self):
+        self.query.query = mock_db.GET_LANG_BY_NAME
+        result = self.query.execute(lang_name=sparql.Literal("Danish"))
+
+        danish_iri = sparql.IRI(EIONET_RDF+'/languages/da')
+        self.assertEqual(list(result), [(danish_iri,)])
 
 
 class MapArgumentsTest(unittest.TestCase):

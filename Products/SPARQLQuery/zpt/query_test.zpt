@@ -33,7 +33,9 @@
     <tr tal:repeat="arg options/arg_spec">
       <td class="form-label" tal:content="arg"/>
       <td tal:define="input_name python:'%s:utf8:ustring' % (arg,)">
-        <input size="50" tal:attributes="name input_name"/>
+        <input size="50"
+               tal:define="prev_value python:request.form.get(arg)"
+               tal:attributes="name input_name; value prev_value"/>
       </td>
     </tr>
     <tr><td colspan="2"><input type="submit" value="Execute"/></td></tr>

@@ -73,6 +73,16 @@ class BrowserTest(unittest.TestCase):
         self.assertEqual(csstext(page, 'table.sparql-results tbody td'),
                          u"<http://rdfdata.eionet.europa.eu/eea/languages/da>")
 
+    def test_autofill_submitted_argument(self):
+        br = self.browser
+        br.open('http://test/test_html')
+        br.select_form(name='query-arguments')
+        br['lang_name:utf8:ustring'] = "Danish"
+        br.submit()
+
+        br.select_form(name='query-arguments')
+        self.assertEqual(br['lang_name:utf8:ustring'], "Danish")
+
     def test_REST_query(self):
         from webob import Request
         import sparql

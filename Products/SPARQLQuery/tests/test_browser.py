@@ -10,6 +10,7 @@ class BrowserTest(unittest.TestCase):
         from Products.SPARQLQuery.Query import SPARQLQuery
 
         self.query = SPARQLQuery('sq', "Test Query", "")
+        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
         app = WsgiApp(self.query)
 
         wsgi_intercept.add_wsgi_intercept('test', 80, lambda: app)
@@ -44,7 +45,6 @@ class BrowserTest(unittest.TestCase):
         self.assertEqual(self.query.arguments, "lang_name:literal:en")
 
     def test_query_test_page(self):
-        self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
         self.query.query = mock_db.GET_LANG_NAMES
         br = self.browser
         page = parse_html(br.open('http://test/test_html').read())
@@ -58,3 +58,16 @@ class BrowserTest(unittest.TestCase):
         self.assertEqual(len(table_data), 45)
         lang_da_url = 'http://rdfdata.eionet.europa.eu/eea/languages/da'
         self.assertEqual(table_data[7], ['<'+lang_da_url+'>', '"Danish"'])
+
+    def test_with_literal_argument(self):
+        self.query.query = mock_db.GET_LANG_BY_NAME
+        self.query.arguments = u"lang_name:literal"
+
+        br = self.browser
+        br.open('http://test/test_html')
+        br.select_form(name='query-arguments')
+        br['lang_name:utf8:ustring'] = "Danish"
+        page = parse_html(br.submit().read())
+
+        self.assertEqual(csstext(page, 'table.sparql-results tbody td'),
+                         u"<http://rdfdata.eionet.europa.eu/eea/languages/da>")

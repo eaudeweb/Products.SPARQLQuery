@@ -70,18 +70,32 @@ class SPARQLQuery(SimpleItem):
         """
         Execute the query and pretty-print the results as an HTML table.
         """
-        t0 = time()
-        result = self.execute()
-        dt = time() - t0
-        data = {
-            'query_duration': dt,
-            'var_names': [unicode(name) for name in result.variables],
-            'rows': result.fetchall(),
-        }
+
+        arg_spec = parse_arg_spec(self.arguments)
+        try:
+            arg_values = map_arg_values(arg_spec, REQUEST.form)
+
+        except KeyError:
+            # missing argument
+            data = None
+            dt = 0
+
+        else:
+            t0 = time()
+            result = self.execute(**arg_values)
+            dt = time() - t0
+
+            data = {
+                'query_duration': dt,
+                'var_names': [unicode(name) for name in result.variables],
+                'rows': result.fetchall(),
+            }
+
         options = {
             'query': self.query,
             'data': data,
             'duration': dt,
+            'arg_spec': arg_spec,
         }
         return self._test_html(REQUEST, **options)
 

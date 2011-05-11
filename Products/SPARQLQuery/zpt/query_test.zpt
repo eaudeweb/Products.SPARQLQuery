@@ -27,11 +27,24 @@
   }
 </style>
 
+<form tal:condition="options/arg_spec"
+      name="query-arguments" method="get">
+  <table>
+    <tr tal:repeat="arg options/arg_spec">
+      <td class="form-label" tal:content="arg"/>
+      <td tal:define="input_name python:'%s:utf8:ustring' % (arg,)">
+        <input size="50" tal:attributes="name input_name"/>
+      </td>
+    </tr>
+    <tr><td colspan="2"><input type="submit" value="Execute"/></td></tr>
+  </table>
+</form>
+
 <blockquote class="sparql-query"
             tal:condition="options/query|nothing"
             tal:content="options/query"/>
 
-<p class="sparql-stats">
+<p class="sparql-stats" tal:condition="options/data">
   Received
   <span class="number" tal:content="python:len(options['data']['rows'])"/>
   rows<tal:block condition="python:'duration' in options"> in
@@ -39,7 +52,7 @@
   seconds</tal:block>.
 </p>
 
-<table class="sparql-results">
+<table class="sparql-results" tal:condition="options/data">
   <thead>
     <tr>
       <th tal:repeat="name options/data/var_names"

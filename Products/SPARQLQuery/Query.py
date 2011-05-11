@@ -106,6 +106,7 @@ class SPARQLQuery(SimpleItem):
 
         arg_spec = parse_arg_spec(self.arguments)
         missing, arg_values = map_arg_values(arg_spec, REQUEST.form)
+        error = None
 
         if missing:
             # missing argument
@@ -114,20 +115,29 @@ class SPARQLQuery(SimpleItem):
 
         else:
             t0 = time()
-            result = self.execute(**arg_values)
-            dt = time() - t0
 
-            data = {
-                'query_duration': dt,
-                'var_names': [unicode(name) for name in result.variables],
-                'rows': result.fetchall(),
-            }
+            try:
+                result = self.execute(**arg_values)
+
+            except Exception, e:
+                import traceback
+                error = traceback.format_exc()
+                data = None
+
+            else:
+                data = {
+                    'var_names': [unicode(name) for name in result.variables],
+                    'rows': result.fetchall(),
+                }
+
+            dt = time() - t0
 
         options = {
             'query': interpolate_query_html(self.query, arg_values),
             'data': data,
             'duration': dt,
             'arg_spec': arg_spec,
+            'error': error,
         }
         return self._test_html(REQUEST, **options)
 

@@ -32,6 +32,11 @@
     font-weight: bold;
     color: #a50;
   }
+
+  .sparql-error {
+    white-space: pre;
+    border: 2px solid #f00;
+  }
 </style>
 
 <form tal:condition="options/arg_spec"
@@ -75,6 +80,10 @@
     </tr>
   </tbody>
 </table>
+
+<blockquote class="sparql-error"
+            tal:condition="options/error|nothing"
+            tal:content="options/error"/>
 
 <tal:block condition="nocall:here/manage|nothing"
            content="structure here/manage_page_footer" />

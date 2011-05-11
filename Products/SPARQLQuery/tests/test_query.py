@@ -57,7 +57,8 @@ class MapArgumentsTest(unittest.TestCase):
 
     def _test(self, raw_arg_spec, arg_data, expected):
         from Products.SPARQLQuery.Query import map_arg_values, parse_arg_spec
-        result = map_arg_values(parse_arg_spec(raw_arg_spec), arg_data)
+        missing, result = map_arg_values(parse_arg_spec(raw_arg_spec), arg_data)
+        self.assertEqual(missing, [])
         self.assertEqual(result, expected)
         self.assertEqual(map(type, result.values()),
                          map(type, expected.values()))

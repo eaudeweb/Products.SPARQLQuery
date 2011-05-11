@@ -86,7 +86,9 @@ class SPARQLQuery(SimpleItem):
             kwargs.update(REQUEST.form)
 
         arg_spec = parse_arg_spec(self.arguments)
-        arg_values = map_arg_values(arg_spec, REQUEST.form)
+        missing, arg_values = map_arg_values(arg_spec, REQUEST.form)
+        if missing:
+            raise KeyError("Missing arguments: %r" % missing)
         result = self.execute(**arg_values)
 
         response = {'data': list(result)}
@@ -101,10 +103,9 @@ class SPARQLQuery(SimpleItem):
         """
 
         arg_spec = parse_arg_spec(self.arguments)
-        try:
-            arg_values = map_arg_values(arg_spec, REQUEST.form)
+        missing, arg_values = map_arg_values(arg_spec, REQUEST.form)
 
-        except KeyError:
+        if missing:
             # missing argument
             data = None
             dt = 0
@@ -173,10 +174,14 @@ def parse_arg_spec(raw_arg_spec):
 
 def map_arg_values(raw_arg_spec, arg_data):
     arg_values = {}
+    missing = []
     for name, rdf_type in raw_arg_spec.iteritems():
-        arg_values[name] = rdf_type(arg_data[name])
+        if name in arg_data:
+            arg_values[name] = rdf_type(arg_data[name])
+        else:
+            missing.append(name)
 
-    return arg_values
+    return missing, arg_values
 
 def interpolate_query(query_spec, var_data):
     from string import Template

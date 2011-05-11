@@ -26,7 +26,7 @@ SELECT * WHERE {
 }
 """
 
-GET_LANG_BY_NAME_DA = GET_LANG_BY_NAME.replace('${lang_name}', '"Danish"')
+GET_LANG_BY_NAME_DA = GET_LANG_BY_NAME.replace('${lang_name}', "'Danish'")
 
 def pack(q):
     return q.replace("\n", " ").encode('utf-8')

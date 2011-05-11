@@ -98,11 +98,11 @@ class InterpolateQueryTest(unittest.TestCase):
 
     def test_one_iri(self):
         onto_name = EIONET_RDF + '/ontology/name'
-        self._test(u"SELECT * WHERE { ?s ${pred} \"Joe\" }",
+        self._test(u"SELECT * WHERE { ?s ${pred} 'Joe' }",
                    {'pred': sparql.IRI(onto_name)},
-                   u"SELECT * WHERE { ?s <%s> \"Joe\" }" % onto_name)
+                   u"SELECT * WHERE { ?s <%s> 'Joe' }" % onto_name)
 
     def test_one_literal(self):
         self._test(u"SELECT * WHERE { ?s ?p ${value} }",
                    {'value': sparql.Literal("Joe", None)},
-                   u"SELECT * WHERE { ?s ?p \"Joe\" }")
+                   u"SELECT * WHERE { ?s ?p 'Joe' }")

@@ -1,5 +1,5 @@
 import unittest
-from mock import patch
+from mock import Mock, patch
 import mock_db
 
 import sparql
@@ -48,6 +48,9 @@ class QueryTest(unittest.TestCase):
 
         danish_iri = sparql.IRI(EIONET_RDF+'/languages/da')
         self.assertEqual(list(result), [(danish_iri,)])
+
+    def test_call(self):
+        self.assertEqual(self.query.execute, self.query.__call__)
 
 
 class MapArgumentsTest(unittest.TestCase):

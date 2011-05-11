@@ -31,6 +31,11 @@ class SPARQLQuery(SimpleItem):
 
     security = ClassSecurityInfo()
 
+    __ac_permissions__ = (
+        # security.declareProtected does not seem to work on __call__
+        ('View', ('__call__','')),
+    )
+
     def __init__(self, id, title, endpoint_url):
         super(SPARQLQuery, self).__init__()
         self._setId(id)
@@ -62,6 +67,8 @@ class SPARQLQuery(SimpleItem):
         args = (self.endpoint_url, cooked_query)
         return run_with_timeout(self.timeout, sparql.query, *args)
 
+    # __call__ requires the "View" permission, see __ac_permissions__ above.
+    __call__ = execute
 
     _test_html = PageTemplateFile('zpt/query_test.zpt', globals())
 

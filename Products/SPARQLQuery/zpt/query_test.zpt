@@ -12,6 +12,13 @@
     border: 2px solid #bbb;
   }
 
+  .sparql-query span.variable {
+    background: #c90;
+  }
+  .sparql-query span.variable.interpolated {
+    background: #6d6;
+  }
+
   table.sparql-results {
     border-collapse: collapse;
   }
@@ -44,7 +51,7 @@
 
 <blockquote class="sparql-query"
             tal:condition="options/query|nothing"
-            tal:content="options/query"/>
+            tal:content="structure options/query"/>
 
 <p class="sparql-stats" tal:condition="options/data">
   Received

@@ -122,7 +122,7 @@ class SPARQLQuery(SimpleItem):
             }
 
         options = {
-            'query': self.query,
+            'query': interpolate_query_html(self.query, arg_values),
             'data': data,
             'duration': dt,
             'arg_spec': arg_spec,
@@ -187,6 +187,39 @@ def interpolate_query(query_spec, var_data):
     from string import Template
     var_strings = dict( (k, v.n3()) for (k, v) in var_data.iteritems() )
     return Template(query_spec).substitute(**var_strings)
+
+def html_quote(s):
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+def interpolate_query_html(query_spec, var_data):
+    """
+    Debugging version of interpolate_query. The result is a SPARQL query
+    that contains HTML markup highlighting where variable substitutions take
+    place.
+    """
+    from string import Template
+    var_strings = dict( (k, v.n3()) for (k, v) in var_data.iteritems() )
+    tmpl = Template(html_quote(query_spec))
+    def convert(mo): # Simplified version of Template's helper function
+        named = mo.group('named') or mo.group('braced')
+        if named is not None:
+            css_class = ['variable']
+            if named in var_strings:
+                css_class.append('interpolated')
+                text = var_strings[named]
+            else:
+                text = mo.group()
+            return '<span class="%(css_class)s">%(text)s</span>' % {
+                'css_class': ' '.join(css_class),
+                'text': html_quote(text),
+            }
+            # TODO return '%s' % var_strings.get(named, mo.group())
+        if mo.group('escaped') is not None:
+            return tmpl.delimiter
+        if mo.group('invalid') is not None:
+            tmpl._invalid(mo)
+        raise ValueError('Unrecognized named group in pattern', tmpl.pattern)
+    return tmpl.pattern.sub(convert, tmpl.template)
 
 def rdf_values_to_json(value):
     if isinstance(value, sparql.RDFTerm):

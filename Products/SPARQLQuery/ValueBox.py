@@ -1,3 +1,4 @@
+from datetime import datetime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
@@ -65,6 +66,7 @@ class ValueBox(SimpleItem):
         """ Edit this value box """
         self.title = REQUEST.form['title']
         self.update_script = REQUEST.form['update_script']
+        REQUEST.SESSION['messages'] = ["Saved changes. (%s)" % (datetime.now())]
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
     security.declareProtected(view_management_screens, 'manage_preview_html')

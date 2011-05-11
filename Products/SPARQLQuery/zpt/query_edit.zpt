@@ -8,6 +8,14 @@
   }
 </style>
 
+<tal:block define="messages request/SESSION/messages|nothing"
+           condition="messages">
+  <div class="system-msg"
+       tal:define="dummy python:request.SESSION.set('messages', None)"
+       tal:repeat="msg messages"
+       tal:content="msg"/>
+</tal:block>
+
 <form name="edit-query" action="manage_edit" method="post">
 <table border="0" cellspacing="0" cellpadding="2">
 

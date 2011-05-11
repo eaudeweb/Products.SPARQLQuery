@@ -2,6 +2,7 @@ import sys
 import threading
 from time import time
 from _depend import json
+from datetime import datetime
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
@@ -60,6 +61,7 @@ class SPARQLQuery(SimpleItem):
         self.timeout = timeout
         self.query = REQUEST.form['query']
         self.arguments = REQUEST.form['arguments']
+        REQUEST.SESSION['messages'] = ["Saved changes. (%s)" % (datetime.now())]
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
     security.declareProtected(view, 'execute')

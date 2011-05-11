@@ -25,6 +25,7 @@ class WsgiApp(object):
 
     def __init__(self, ui):
         self.ui = ui
+        self.session = {}
 
     @wsgify
     def __call__(self, request):
@@ -43,6 +44,7 @@ class WsgiApp(object):
         else:
             headers = {}
             zope_request.RESPONSE.setHeader = Mock(side_effect=headers.__setitem__)
+            zope_request.SESSION = self.session
             try:
                 body = method(zope_request)
             except Forbidden:

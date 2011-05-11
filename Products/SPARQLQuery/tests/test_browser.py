@@ -11,9 +11,9 @@ class BrowserTest(unittest.TestCase):
 
         self.query = SPARQLQuery('sq', "Test Query", "")
         self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
-        app = WsgiApp(self.query)
+        self.app = WsgiApp(self.query)
 
-        wsgi_intercept.add_wsgi_intercept('test', 80, lambda: app)
+        wsgi_intercept.add_wsgi_intercept('test', 80, lambda: self.app)
         self.browser = wsgi_intercept.mechanize_intercept.Browser()
 
         self.validate_patch = patch('AccessControl.SecurityManagement'
@@ -71,3 +71,19 @@ class BrowserTest(unittest.TestCase):
 
         self.assertEqual(csstext(page, 'table.sparql-results tbody td'),
                          u"<http://rdfdata.eionet.europa.eu/eea/languages/da>")
+
+    def test_REST_query(self):
+        from webob import Request
+        import sparql
+        from Products.SPARQLQuery._depend import json
+        from test_query import EIONET_RDF
+        self.query.query = mock_db.GET_LANG_BY_NAME
+        self.query.arguments = u"lang_name:literal"
+
+        req = Request.blank('http://test/?lang_name=Danish')
+        response = req.get_response(self.app)
+
+        self.assertEqual(response.headers['Content-Type'], 'application/json')
+        json_response = json.loads(response.body)
+        danish_iri = sparql.IRI(EIONET_RDF+'/languages/da')
+        self.assertEqual(json_response['data'], [[danish_iri.n3()]])

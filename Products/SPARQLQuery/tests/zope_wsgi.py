@@ -41,12 +41,14 @@ class WsgiApp(object):
         except AttributeError:
             return HTTPNotFound()
         else:
+            headers = {}
+            zope_request.RESPONSE.setHeader = Mock(side_effect=headers.__setitem__)
             try:
                 body = method(zope_request)
             except Forbidden:
                 return HTTPForbidden()
             else:
-                return Response(body)
+                return Response(body, headers=headers)
 
 
 def _register_traversal_adapters():

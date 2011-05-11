@@ -1,6 +1,7 @@
 import sys
 import threading
 from time import time
+from _depend import json
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
@@ -71,6 +72,27 @@ class SPARQLQuery(SimpleItem):
     __call__ = execute
 
     _test_html = PageTemplateFile('zpt/query_test.zpt', globals())
+
+    def index_html(self, REQUEST=None, **kwargs):
+        """
+        REST API
+
+        Request format is the same as for the `test_html` method.
+
+        Response will be JSON, with values encoded as strings in N3 format.
+        """
+
+        if REQUEST is not None:
+            kwargs.update(REQUEST.form)
+
+        arg_spec = parse_arg_spec(self.arguments)
+        arg_values = map_arg_values(arg_spec, REQUEST.form)
+        result = self.execute(**arg_values)
+
+        response = {'data': list(result)}
+        if REQUEST is not None:
+            REQUEST.RESPONSE.setHeader('Content-Type', 'application/json')
+        return json.dumps(response, default=rdf_values_to_json)
 
     security.declareProtected(view, 'test_html')
     def test_html(self, REQUEST):
@@ -160,3 +182,8 @@ def interpolate_query(query_spec, var_data):
     from string import Template
     var_strings = dict( (k, v.n3()) for (k, v) in var_data.iteritems() )
     return Template(query_spec).substitute(**var_strings)
+
+def rdf_values_to_json(value):
+    if isinstance(value, sparql.RDFTerm):
+        return value.n3()
+    raise TypeError

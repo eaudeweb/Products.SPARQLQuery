@@ -72,15 +72,33 @@ class MapArgumentsTest(unittest.TestCase):
                    {'lang_url': en},
                    {'lang_url': sparql.IRI(en)})
 
+    def test_map_one_parsed_iri(self):
+        en = EIONET_RDF + '/languages/en'
+        self._test(u'lang_url:n3term',
+                   {'lang_url': '<%s>' % en},
+                   {'lang_url': sparql.IRI(en)})
+
     def test_map_one_literal(self):
-        self._test(u'name:literal',
+        self._test(u'name:string',
                    {'name': u"Joe"},
                    {'name': sparql.Literal(u"Joe", None)})
 
+    def test_map_one_float(self):
+        en = EIONET_RDF + '/languages/en'
+        self._test(u'lang_url:float',
+                   {'lang_url': '1.23'},
+                   {'lang_url': sparql.TypedLiteral('1.23', sparql.XSD_FLOAT)})
+
+    def test_map_one_parsed_typed_literal(self):
+        en = EIONET_RDF + '/languages/en'
+        self._test(u'lang_url:n3term',
+                   {'lang_url': '"12:33"^^'+sparql.XSD_TIME},
+                   {'lang_url': sparql.TypedLiteral('12:33', sparql.XSD_TIME)})
+
     def test_map_two_values(self):
         en = EIONET_RDF + '/languages/en'
-        self._test(u'name:literal lang_url:iri',
-                   {'name': u"Joe", 'lang_url': en},
+        self._test(u'name:string lang_url:n3term',
+                   {'name': u"Joe", 'lang_url': '<%s>' % en},
                    {'name': sparql.Literal(u"Joe", None),
                     'lang_url': sparql.IRI(en)})
 

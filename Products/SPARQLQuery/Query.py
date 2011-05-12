@@ -171,25 +171,35 @@ def run_with_timeout(timeout, func, *args, **kwargs):
     else:
         return result['return']
 
-RDF_TYPES = {
-    'literal': sparql.Literal,
-    'iri': sparql.IRI
+RDF_TERM_FACTORY = {
+    'n3term':   sparql.parse_n3_term,
+    'iri':      sparql.IRI,
+    'string':   sparql.Literal,
+    'integer':  lambda v: sparql.TypedLiteral(v, sparql.XSD_INTEGER),
+    'long':     lambda v: sparql.TypedLiteral(v, sparql.XSD_LONG),
+    'double':   lambda v: sparql.TypedLiteral(v, sparql.XSD_DOUBLE),
+    'float':    lambda v: sparql.TypedLiteral(v, sparql.XSD_FLOAT),
+    'decimal':  lambda v: sparql.TypedLiteral(v, sparql.XSD_DECIMAL),
+    'datetime': lambda v: sparql.TypedLiteral(v, sparql.XSD_DATETIME),
+    'date':     lambda v: sparql.TypedLiteral(v, sparql.XSD_DATE),
+    'time':     lambda v: sparql.TypedLiteral(v, sparql.XSD_TIME),
+    'boolean':  lambda v: sparql.TypedLiteral(v, sparql.XSD_BOOLEAN),
 }
 
 def parse_arg_spec(raw_arg_spec):
     arg_spec = {}
     for one_arg_spec in raw_arg_spec.split():
         name, type_spec = one_arg_spec.split(':')
-        rdf_type = RDF_TYPES[type_spec]
-        arg_spec[str(name)] = rdf_type
+        factory = RDF_TERM_FACTORY[type_spec]
+        arg_spec[str(name)] = factory
     return arg_spec
 
 def map_arg_values(raw_arg_spec, arg_data):
     arg_values = {}
     missing = []
-    for name, rdf_type in raw_arg_spec.iteritems():
+    for name, factory in raw_arg_spec.iteritems():
         if name in arg_data:
-            arg_values[name] = rdf_type(arg_data[name])
+            arg_values[name] = factory(arg_data[name])
         else:
             missing.append(name)
 

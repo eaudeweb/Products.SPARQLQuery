@@ -87,16 +87,32 @@ class SPARQLQuery(SimpleItem):
         if REQUEST is not None:
             kwargs.update(REQUEST.form)
 
-        arg_spec = parse_arg_spec(self.arg_spec)
-        missing, arg_values = map_arg_values(arg_spec, REQUEST.form)
-        if missing:
-            raise KeyError("Missing arguments: %r" % missing)
+        arg_values = self.map_arguments(**kwargs)
         result = self.execute(**arg_values)
 
         response = {'data': list(result)}
         if REQUEST is not None:
             REQUEST.RESPONSE.setHeader('Content-Type', 'application/json')
         return json.dumps(response, default=rdf_values_to_json)
+
+    security.declareProtected(view, 'map_arguments')
+    def map_arguments(self, **kwargs):
+        """ Map the given arguments to our arg_spec """
+        arg_spec = parse_arg_spec(self.arg_spec)
+        missing, arg_values = map_arg_values(arg_spec, kwargs)
+        if missing:
+            raise KeyError("Missing arguments: %r" % missing)
+        else:
+            return arg_values
+
+    security.declareProtected(view, 'map_and_execute')
+    def map_and_execute(self, **kwargs):
+        """
+        Map the given arguments to our arg_spec and execute the query.
+        `query.map_and_execute(**data)` is exactly equivalent to
+        `query.execute(**query.map_arguments(**data))`.
+        """
+        return self.execute(**self.map_arguments(**kwargs))
 
     security.declareProtected(view, 'test_html')
     def test_html(self, REQUEST):

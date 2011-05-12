@@ -52,6 +52,14 @@ class QueryTest(unittest.TestCase):
     def test_call(self):
         self.assertEqual(self.query.execute, self.query.__call__)
 
+    def test_map_and_execute(self):
+        self.query.query = mock_db.GET_LANG_BY_NAME
+        self.query.arg_spec = u"lang_name:n3term"
+        result = self.query.map_and_execute(lang_name='"Danish"')
+
+        danish_iri = sparql.IRI(EIONET_RDF+'/languages/da')
+        self.assertEqual(list(result), [(danish_iri,)])
+
 
 class MapArgumentsTest(unittest.TestCase):
 

@@ -61,7 +61,7 @@ class BrowserTest(unittest.TestCase):
                       for tr in css(table, 'tbody tr')]
         self.assertEqual(len(table_data), 45)
         lang_da_url = 'http://rdfdata.eionet.europa.eu/eea/languages/da'
-        self.assertEqual(table_data[7], ['<'+lang_da_url+'>', '"Danish"'])
+        self.assertEqual(table_data[7], ['<'+lang_da_url+'>', "'Danish'@en"])
 
     def test_with_literal_argument(self):
         br = self.browser

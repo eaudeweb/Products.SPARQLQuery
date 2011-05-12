@@ -44,7 +44,7 @@ class SPARQLQuery(SimpleItem):
         self.title = title
         self.endpoint_url = endpoint_url
         self.timeout = None
-        self.arguments = ""
+        self.arg_spec = ""
         self.query = ""
 
     security.declareProtected(view_management_screens, 'manage_edit_html')
@@ -60,7 +60,7 @@ class SPARQLQuery(SimpleItem):
             timeout = float(timeout)
         self.timeout = timeout
         self.query = REQUEST.form['query']
-        self.arguments = REQUEST.form['arguments']
+        self.arg_spec = REQUEST.form['arg_spec']
         REQUEST.SESSION['messages'] = ["Saved changes. (%s)" % (datetime.now())]
         REQUEST.RESPONSE.redirect(self.absolute_url() + '/manage_workspace')
 
@@ -87,7 +87,7 @@ class SPARQLQuery(SimpleItem):
         if REQUEST is not None:
             kwargs.update(REQUEST.form)
 
-        arg_spec = parse_arg_spec(self.arguments)
+        arg_spec = parse_arg_spec(self.arg_spec)
         missing, arg_values = map_arg_values(arg_spec, REQUEST.form)
         if missing:
             raise KeyError("Missing arguments: %r" % missing)
@@ -104,7 +104,7 @@ class SPARQLQuery(SimpleItem):
         Execute the query and pretty-print the results as an HTML table.
         """
 
-        arg_spec = parse_arg_spec(self.arguments)
+        arg_spec = parse_arg_spec(self.arg_spec)
         missing, arg_values = map_arg_values(arg_spec, REQUEST.form)
         error = None
 

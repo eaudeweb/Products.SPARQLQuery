@@ -41,8 +41,8 @@
 
   <tr>
     <td class="form-label">Arguments</td>
-    <td><input type="text" name="arguments:utf8:ustring" size="50"
-               tal:attributes="value here/arguments"/></td>
+    <td><input type="text" name="arg_spec:utf8:ustring" size="50"
+               tal:attributes="value here/arg_spec"/></td>
   </tr>
 
 </table>

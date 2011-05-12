@@ -12,7 +12,7 @@ class BrowserTest(unittest.TestCase):
         self.query = SPARQLQuery('sq', "Test Query", "")
         self.query.endpoint_url = "http://cr3.eionet.europa.eu/sparql"
         self.query.query = mock_db.GET_LANG_BY_NAME
-        self.query.arguments = u"lang_name:string"
+        self.query.arg_spec = u"lang_name:string"
 
         self.app = WsgiApp(self.query)
 
@@ -39,17 +39,17 @@ class BrowserTest(unittest.TestCase):
         br['title:utf8:ustring'] = "My awesome query"
         br['endpoint_url:utf8:ustring'] = "http://dbpedia.org/sparql"
         br['query:utf8:ustring'] = "New query value"
-        br['arguments:utf8:ustring'] = "confirm:boolean"
+        br['arg_spec:utf8:ustring'] = "confirm:boolean"
         br.submit()
 
         self.assertEqual(self.query.title, "My awesome query")
         self.assertEqual(self.query.endpoint_url, "http://dbpedia.org/sparql")
         self.assertEqual(self.query.query, "New query value")
-        self.assertEqual(self.query.arguments, "confirm:boolean")
+        self.assertEqual(self.query.arg_spec, "confirm:boolean")
 
     def test_query_test_page(self):
         self.query.query = mock_db.GET_LANG_NAMES
-        self.query.arguments = u""
+        self.query.arg_spec = u""
         br = self.browser
         page = parse_html(br.open('http://test/test_html').read())
         table = css(page, 'table.sparql-results')[0]
